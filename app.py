@@ -17,6 +17,38 @@ batch_size = st.sidebar.slider("Batch size", 20, 100, 50, step=10)
 # Example ticker list (combine your tickers here)
 tickers = [
     "KO","PEP","XOM","WMT","JNJ","VZ","T","BAC","GE","IBM",
+    "PG","CVX","HD","MRK","MCD","MMM","CAT","DIS","NKE","GS",
+    "F","GM","UPS","FDX","RTX","BA","SO","DUK","EXC","PSX",
+    "CVS","DHR","MDT","ABBV","ZTS","LMT","TGT","CL","APD","EOG",
+    "SLB","COP","INTC","HON","DD","SYK","USB","SCHW","BK","PNC",
+    "BLK","SPGI","CME","ICE","FIS","VLO","KMB","MCK","EL","MO",
+    "PM","TROW","MSCI","EMR","KMI","PSA","O","VTR","ARE","D",
+    "PEG","CMS","PPL","ED","ES","EIX","NRG","XEL","WEC","DTE",
+    "ETR","SRE","AWK","EXR","DLR","EQIX","AMT","CCI","SBAC","WY",
+    "VNO","ESS","HST","IRM","BXP","SLG","UDR","AVB","MAA","EQR",
+    "WELL","OXY","HAL","NOV","BKR","FTI","CXO","TAP","K","GIS",
+    "HSY","KHC","CPB","SJM","KR","CLX","WBA","CAH","DGX","LH",
+    "BAX","TMO","ABT","MRO","PXD","APA","FANG","CLR","MPC","HES",
+    "CNX","RRC","EQT","SWN","CHK","AR","MTDR","DVN","LPI",
+
+    # — Bio/Health & S&P-large biotech (~250 tickers)
+    "AAPL","MSFT","GOOGL","GOOG","AMZN","META","NVDA","ADBE","CRM","ORCL",
+    "CSCO","TXN","INTU","QCOM","AMD","SHOP","UBER","LYFT","ZM","DOCU",
+    "TWLO","SNAP","SQ","PYPL","MA","V","AXP","JPM","C","WFC","MS",
+    "BRK-B","LMT","NOC","BA","GD","RTN","DAL","UAL","AAL","CSX",
+    "NSC","KSU","CNI","EMR","ETN","ROK","PH","LHX","ITW","PCAR",
+    "DE","SHW","LIN","ALB","BLL","LYB","IFF","CE","FMC","MOS","NUE",
+    "PKG","AVY","SEE","WRK","MHK","LEG","RSG","WM","MNST","SBUX",
+    "YUM","DPZ","DRI","CMG","BJRI","RCL","HLT","MAR","WYNN","MGM",
+    "DIS","NFLX","CMCSA","TMUS","CCI","PLD","DLR","SBAC","AVB","ESS",
+    "VTR","MAA","EQR","V","MA","JCI","PNR","IRM","HIG","AIG",
+    "MMC","CB","PHM","LEN","DHI","LOW","HD","TOL","NVR","LEN",
+    "APD","LIN","LYB","ECL","APD","SHW","NOW","FTNT","PANW","ZS",
+    "CRWD","OKTA","NET","DDOG","DOCU","SNOW","SPLK","ZI","TEAM",
+    "WORK","TWLO","MDB","MELI","SHOP","DDOG","HYRO","OKTA",
+    "BIIB","REGN","VRTX","GILD","AMGN","BNTX","ALXN","ILMN","IDXX",
+    "EXEL","SRPT","CRSP","NTLA","EDIT","MYGN","NBIX","NKTR","NVAX",
+    "ONTX","OPRX","PRVB","QURE","SGMO","STML","XENE","ZLAB"
     
 ]
 
