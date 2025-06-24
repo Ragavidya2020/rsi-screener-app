@@ -27,7 +27,20 @@ nyse_large_cap = [
     "HAL", "NOV", "BKR", "FTI", "APA", "MPC", "PSX", "VLO", "HES", "MRO",
     "PXD", "CNX", "RRC", "EQT", "SWN", "CHK", "AR", "CLR", "MTDR", "CXO",
     "NBL", "DVN", "FANG", "LPI", "CXO", "EOG", "OXY", "XOM", "COP", "CVX",
-    "SLB", "HAL", "NOV", "BKR", "FTI", "APA"
+    "SLB", "HAL", "NOV", "BKR", "FTI", "APA", "BIIB", "REGN", "VRTX", "GILD", "AMGN", "BNTX", "ALXN", "ILMN", "IDXX", "EXEL",
+    "SRPT", "CRSP", "NTLA", "ABEO", "ENTA", "OPGN", "BLUE", "EDIT", "ACAD", "ADMA",
+    "AGIO", "ALNY", "AMRS", "ANAB", "ARCT", "ARGX", "ATNM", "AVRO", "BCEL", "BGNE",
+    "BMRN", "BLUE", "BPMC", "BTAI", "CBMG", "CDMO", "CDXS", "CERC", "CHRS", "CLLS",
+    "CRBP", "CRSP", "CRTX", "DNLI", "DTIL", "EDIT", "EIDX", "ENLV", "ENTA", "EOLS",
+    "ERAS", "ESPR", "ESTA", "EXEL", "FGEN", "FSTX", "GBIO", "GILD", "GLMD", "GNCA",
+    "GNFT", "GOSS", "HRTX", "ICPT", "IDYA", "IGMS", "IMNM", "IMMU", "INSM", "INSY",
+    "IONS", "IPHA", "ITCI", "KRTX", "KURA", "LIFE", "LNTH", "LPTX", "MACK", "MARA",
+    "MRNA", "MRNS", "MYGN", "NBIX", "NERV", "NK", "NKTR", "NTRA", "NVAX", "NXTC",
+    "OCGN", "OGEN", "OMGA", "ONCT", "ONCS", "ONCY", "ONTX", "OPRX", "OPRX", "ORGO",
+    "OSMT", "OTLK", "PAQC", "PIRS", "PMN", "PRQR", "PRVB", "PTCT", "PSTI", "QURE",
+    "RCUS", "REPL", "RGNX", "RIGL", "RLYB", "RVMD", "SANM", "SAGE", "SGMO", "SNDX",
+    "SRPT", "STOK", "STML", "STRO", "SUPN", "TGTX", "TMDX", "TNXP", "TTOO", "VYGR",
+    "VRTX", "XENE", "XLRN", "ZLAB"
 ]
 
 # User selects interval
