@@ -95,11 +95,6 @@ if st.button("🔍 Run RSI Scan"):
         st.info("✅ No tickers found with RSI < 30.")
     else:
         st.success(f"✅ Found {len(df_out)} tickers with RSI < 30")
-        st.dataframe(
-    df_out[["Ticker", "Price", "RSI"]].sort_values("RSI").style.format({
-        "Price": "${:.2f}",
-        "RSI": "{:.2f}"
-    })
-)
+        st.dataframe(df_out[["Ticker", "Price", "RSI"]].sort_values("RSI"))
 
     st.caption(f"Last scan: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
