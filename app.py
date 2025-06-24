@@ -1,61 +1,63 @@
+# Install dependencies automatically
+import subprocess, sys
+for pkg in ["streamlit", "yfinance", "pandas", "get-all-tickers"]:
+    subprocess.call([sys.executable, "-m", "pip", "install", pkg, "--quiet"])
+
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+from get_all_tickers import get_tickers as gt
 from datetime import datetime
 
-st.set_page_config(page_title="RSI Screener", layout="wide")
-st.title("📉 NYSE RSI Screener (1m & 5m)")
-st.markdown("Shows NYSE stocks with RSI(14) < 30 on both 1-minute and 5-minute intervals.")
+st.set_page_config(layout="wide", page_title="NYSE RSI Scanner")
+st.title("📊 NYSE RSI(14) <30 Scanner — Cap > $500M")
 
-# Sample NYSE ticker list (extend this!)
-nyse_tickers = [
-    "KO", "PEP", "XOM", "WMT", "JNJ", "VZ", "T", "BAC", "GE", "IBM",
-    "PG", "CVX", "HD", "MRK", "MCD", "MMM", "CAT", "DIS", "NKE", "GS"
-]
+fcap = 500_000_000  # $500 million filter
 
-@st.cache_data(show_spinner=False)
-def calculate_rsi(data, period=14):
-    delta = data['Close'].diff()
-    gain = delta.where(delta > 0, 0).rolling(window=period).mean()
-    loss = -delta.where(delta < 0, 0).rolling(window=period).mean()
+@st.cache_data
+def fetch_nyse_large():
+    # Fetch NYSE tickers and filter by market cap
+    nyse = gt.get_tickers_by_exchange("NYSE")
+    data = yf.Tickers(" ".join(nyse)).tickers
+    large = [t.ticker for t in data.values()
+             if t.info.get("marketCap", 0) >= fcap]
+    return large
+
+@st.cache_data
+def calculate_rsi(df, period=14):
+    delta = df["Close"].diff()
+    gain = delta.where(delta > 0, 0).rolling(period).mean()
+    loss = -delta.where(delta < 0, 0).rolling(period).mean()
     rs = gain / loss
-    rsi = 100 - (100 / (1 + rs))
-    return rsi
+    return 100 - (100 / (1 + rs))
 
-def scan_rsi_under_30(tickers, interval, period):
-    results = []
-    for ticker in tickers:
+def scan_rsi(symbols, interval, period):
+    out = []
+    for s in symbols:
         try:
-            df = yf.download(ticker, interval=interval, period=period, progress=False)
-            if df.empty:
-                continue
-            df['RSI'] = calculate_rsi(df)
-            latest_rsi = df['RSI'].dropna().iloc[-1]
-            if latest_rsi < 30:
-                results.append({"Ticker": ticker, "RSI": round(latest_rsi, 2)})
-        except Exception as e:
+            df = yf.download(s, interval=interval, period=period, progress=False)
+            df["RSI"] = calculate_rsi(df)
+            last = df["RSI"].dropna().iloc[-1]
+            if last < 30:
+                out.append({"Ticker": s, "RSI": round(last, 2)})
+        except:
             continue
-    return pd.DataFrame(results)
+    return pd.DataFrame(out)
 
-if st.button("🔍 Run Scan"):
-    with st.spinner("Scanning NYSE tickers for RSI < 30..."):
-        rsi_1m = scan_rsi_under_30(nyse_tickers, "1m", "1d")
-        rsi_5m = scan_rsi_under_30(nyse_tickers, "5m", "5d")
+if st.button("🔍 Run Full Scan"):
+    with st.spinner("Fetching NYSE tickers (market cap > $500M)…"):
+        symbols = fetch_nyse_large()
+    st.write(f"Checking {len(symbols)} tickers…")
 
     col1, col2 = st.columns(2)
-
     with col1:
-        st.subheader("📉 RSI(14) < 30 — 1 Minute")
-        if rsi_1m.empty:
-            st.info("No stocks under RSI 30 on 1-minute chart.")
-        else:
-            st.dataframe(rsi_1m)
+        df1 = scan_rsi(symbols, "1m", "1d")
+        st.subheader("📉 RSI <30 (1‑minute)")
+        st.table(df1 if not df1.empty else "No tickers found")
 
     with col2:
-        st.subheader("📉 RSI(14) < 30 — 5 Minute")
-        if rsi_5m.empty:
-            st.info("No stocks under RSI 30 on 5-minute chart.")
-        else:
-            st.dataframe(rsi_5m)
+        df5 = scan_rsi(symbols, "5m", "5d")
+        st.subheader("📉 RSI <30 (5‑minute)")
+        st.table(df5 if not df5.empty else "No tickers found")
 
-    st.caption(f"Last scan: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    st.caption(f"Last scanned at {datetime.now():%Y‑%m‑%d %H:%M:%S}")
