@@ -75,9 +75,10 @@ def scan_rsi(tickers, interval, period, batch_size=50):
                 if df.empty:
                     continue
                 df["RSI"] = calculate_rsi(df)
-                latest = df["RSI"].dropna().iloc[-1]
-                if latest < 30:
-                    results.append({"Ticker": ticker, "RSI": round(latest, 2)})
+                latest_rsi = df["RSI"].dropna().iloc[-1]
+                latest_price = df["Close"].dropna().iloc[-1]
+                if latest_rsi < 30:
+                    results.append({"Ticker": ticker, "Price": round(latest_price, 2), "RSI": round(latest_rsi, 2)})
             except:
                 continue
         progress.progress((i + 1) / num_batches)
