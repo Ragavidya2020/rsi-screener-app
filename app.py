@@ -7,50 +7,19 @@ from datetime import datetime
 st.set_page_config(layout="wide", page_title="RSI Scanner")
 st.title("📊 RSI(14) < 30 Scanner — Large Cap + Biotech")
 
-# -- Sidebar Settings --
+# Sidebar Settings
 st.sidebar.header("Scan Settings")
 interval = st.sidebar.selectbox("Choose RSI timeframe:", ["1m", "5m", "15m", "30m", "60m", "1d"])
 period_map = {"1m": "1d", "5m": "5d", "15m": "10d", "30m": "20d", "60m": "60d", "1d": "1y"}
 period = period_map[interval]
 batch_size = st.sidebar.slider("Batch size", 20, 100, 50, step=10)
 
-# -- Ticker List (Large Cap + Biotech, no duplicates) --
+# Example ticker list (combine your tickers here)
 tickers = [
-    # NYSE large cap (~150 sample)
     "KO","PEP","XOM","WMT","JNJ","VZ","T","BAC","GE","IBM",
-    "PG","CVX","HD","MRK","MCD","MMM","CAT","DIS","NKE","GS",
-    "F","GM","UPS","FDX","RTX","BA","SO","DUK","EXC","PSX",
-    "CVS","DHR","MDT","ABBV","ZTS","LMT","TGT","CL","APD","EOG",
-    "SLB","COP","INTC","HON","DD","SYK","USB","SCHW","BK","PNC",
-    "BLK","SPGI","CME","ICE","FIS","VLO","KMB","MCK","EL","MO",
-    "PM","TROW","MSCI","EMR","KMI","PSA","O","VTR","ARE","D",
-    "PEG","CMS","PPL","ED","ES","EIX","NRG","XEL","WEC","DTE",
-    "ETR","SRE","AWK","EXR","DLR","EQIX","AMT","CCI","SBAC","WY",
-    "VNO","ESS","HST","IRM","BXP","SLG","UDR","AVB","MAA","EQR",
-    "WELL","OXY","HAL","NOV","BKR","FTI","CXO","TAP","K","GIS",
-    "HSY","KHC","CPB","SJM","KR","CLX","WBA","CAH","DGX","LH",
-    "BAX","TMO","ABT","MRO","PXD","APA","FANG","CLR","MPC","HES",
-    "CNX","RRC","EQT","SWN","CHK","AR","MTDR","DVN","LPI",
-
-    # Biotech (~250 tickers)
-    "AAPL","MSFT","GOOGL","GOOG","AMZN","META","NVDA","ADBE","CRM","ORCL",
-    "CSCO","TXN","INTU","QCOM","AMD","SHOP","UBER","LYFT","ZM","DOCU",
-    "TWLO","SNAP","SQ","PYPL","MA","V","AXP","JPM","C","WFC","MS",
-    "BRK-B","LMT","NOC","BA","GD","RTN","DAL","UAL","AAL","CSX",
-    "NSC","KSU","CNI","EMR","ETN","ROK","PH","LHX","ITW","PCAR",
-    "DE","SHW","LIN","ALB","BLL","LYB","IFF","CE","FMC","MOS","NUE",
-    "PKG","AVY","SEE","WRK","MHK","LEG","RSG","WM","MNST","SBUX",
-    "YUM","DPZ","DRI","CMG","BJRI","RCL","HLT","MAR","WYNN","MGM",
-    "DIS","NFLX","CMCSA","TMUS","CCI","PLD","DLR","SBAC","AVB","ESS",
-    "VTR","MAA","EQR","JCI","PNR","IRM","HIG","AIG","MMC","CB",
-    "PHM","LEN","DHI","LOW","HD","TOL","NVR","NOW","FTNT","PANW",
-    "ZS","CRWD","OKTA","NET","DDOG","SNOW","SPLK","ZI","TEAM",
-    "BIIB","REGN","VRTX","GILD","AMGN","BNTX","ALXN","ILMN","IDXX",
-    "EXEL","SRPT","CRSP","NTLA","EDIT","MYGN","NBIX","NKTR","NVAX",
-    "ONTX","OPRX","PRVB","QURE","SGMO","STML","XENE","ZLAB"
+    # ... add all your tickers ...
 ]
 
-# -- RSI Calculation --
 def calculate_rsi(data, period=14):
     delta = data['Close'].diff()
     gain = delta.where(delta > 0, 0).rolling(window=period).mean()
@@ -59,7 +28,6 @@ def calculate_rsi(data, period=14):
     rsi = 100 - (100 / (1 + rs))
     return rsi
 
-# -- RSI Scanner with Batching --
 def scan_rsi(tickers, interval, period, batch_size=50):
     results = []
     total = len(tickers)
@@ -86,7 +54,6 @@ def scan_rsi(tickers, interval, period, batch_size=50):
 
     return pd.DataFrame(results)
 
-# -- Main App Logic --
 if st.button("🔍 Run RSI Scan"):
     with st.spinner("Scanning in batches..."):
         df_out = scan_rsi(tickers, interval, period, batch_size)
@@ -94,7 +61,11 @@ if st.button("🔍 Run RSI Scan"):
     if df_out.empty:
         st.info("✅ No tickers found with RSI < 30.")
     else:
-        st.success(f"✅ Found {len(df_out)} tickers with RSI < 30")
-        st.dataframe(df_out[["Ticker", "Price", "RSI"]].sort_values("RSI"))
+        # Ensure numeric and fill NaN to avoid formatting errors
+        df_out["Price"] = pd.to_numeric(df_out["Price"], errors="coerce").fillna(0)
+        df_out["RSI"] = pd.to_numeric(df_out["RSI"], errors="coerce").fillna(0)
+
+        df_display = df_out[["Ticker", "Price", "RSI"]].sort_values("RSI")
+        st.write(df_display)
 
     st.caption(f"Last scan: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
