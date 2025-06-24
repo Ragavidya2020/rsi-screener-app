@@ -17,7 +17,7 @@ batch_size = st.sidebar.slider("Batch size", 20, 100, 50, step=10)
 # Example ticker list (combine your tickers here)
 tickers = [
     "KO","PEP","XOM","WMT","JNJ","VZ","T","BAC","GE","IBM",
-    # ... add all your tickers ...
+    
 ]
 
 def calculate_rsi(data, period=14):
