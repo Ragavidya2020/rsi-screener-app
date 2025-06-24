@@ -40,7 +40,7 @@ nyse_large_cap = [
     "OSMT", "OTLK", "PAQC", "PIRS", "PMN", "PRQR", "PRVB", "PTCT", "PSTI", "QURE",
     "RCUS", "REPL", "RGNX", "RIGL", "RLYB", "RVMD", "SANM", "SAGE", "SGMO", "SNDX",
     "SRPT", "STOK", "STML", "STRO", "SUPN", "TGTX", "TMDX", "TNXP", "TTOO", "VYGR",
-    "VRTX", "XENE", "XLRN", "ZLAB"
+    "VRTX", "XENE", "XLRN", "ZLAB", "RBNE"
 ]
 
 # User selects interval
